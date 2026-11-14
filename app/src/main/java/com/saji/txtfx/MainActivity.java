@@ -30,10 +30,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MimeTypes;
 import androidx.media3.common.Player;
@@ -124,7 +126,7 @@ public class MainActivity extends Activity {
                 long position = Math.max(0, player.getCurrentPosition());
                 long duration = Math.max(1, player.getDuration());
                 if (!userSeeking) timelineSeek.setProgress((int)Math.min(1000, position * 1000L / duration));
-                playbackTime.setText(formatTime(position) + " / " + (player.getDuration() == Player.TIME_UNSET
+                playbackTime.setText(formatTime(position) + " / " + (player.getDuration() == C.TIME_UNSET
                         ? "00:00" : formatTime(duration)));
                 playButton.setText(player.isPlaying() ? "PAUSE" : "PLAY");
                 updatePreviewCaption(position);
