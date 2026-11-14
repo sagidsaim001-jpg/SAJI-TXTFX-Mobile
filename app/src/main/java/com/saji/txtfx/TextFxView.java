@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.SystemClock;
@@ -68,7 +69,11 @@ public class TextFxView extends View {
                                   String text, int style, int color, float sizeSp,
                                   int backgroundColor, boolean safeFrame, Typeface font) {
         if (width <= 0 || height <= 0) return;
-        canvas.drawColor(backgroundColor);
+        if (backgroundColor == Color.TRANSPARENT) {
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        } else {
+            canvas.drawColor(backgroundColor);
+        }
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
         paint.setTypeface(font);
