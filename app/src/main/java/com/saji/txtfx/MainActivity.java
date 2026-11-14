@@ -232,9 +232,9 @@ public class MainActivity extends Activity {
         page.addView(colors);
         addSpace(page, 22);
 
-        TextView note = text("EXPORT  •  720p MP4  •  GREEN SCREEN", 11, Color.rgb(70, 229, 210), true);
+        TextView note = text("EXPORT  •  MP4 GREEN SCREEN  +  TRANSPARENT GIF", 11, Color.rgb(70, 229, 210), true);
         page.addView(note);
-        TextView noteBody = text("Save an animated green-background video to Movies/SAJI TXTFX, then use Chroma Key in InShot to remove the green.", 12, Color.rgb(158, 164, 190), false);
+        TextView noteBody = text("MP4 saves to Movies/SAJI TXTFX for InShot Chroma Key. Transparent GIF saves to Pictures/SAJI TXTFX.", 12, Color.rgb(158, 164, 190), false);
         noteBody.setPadding(0, dp(6), 0, dp(12));
         page.addView(noteBody);
 
