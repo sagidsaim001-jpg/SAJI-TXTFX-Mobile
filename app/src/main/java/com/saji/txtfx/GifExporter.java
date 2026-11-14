@@ -143,7 +143,7 @@ public final class GifExporter {
                 bits.write(prefix, codeSize);
                 if (nextCode < 4096) {
                     dictionary.put(key, nextCode++);
-                    if (nextCode == (1 << codeSize) && codeSize < 12) codeSize++;
+                    if (nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
                 } else {
                     bits.write(clearCode, codeSize);
                     dictionary.clear();
