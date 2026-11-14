@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
     private EditText lyricInput;
     private TextView styleStatus;
     private Button exportButton;
+    private Button gifButton;
     private Spinner fontSpinner;
 
     @Override
@@ -237,15 +238,31 @@ public class MainActivity extends Activity {
         noteBody.setPadding(0, dp(6), 0, dp(12));
         page.addView(noteBody);
 
+        LinearLayout exportRow = new LinearLayout(this);
+        exportRow.setOrientation(LinearLayout.HORIZONTAL);
         exportButton = new Button(this);
-        exportButton.setText("EXPORT MP4  ↗");
+        exportButton.setText("EXPORT MP4");
         exportButton.setTextColor(Color.WHITE);
-        exportButton.setTextSize(14);
+        exportButton.setTextSize(13);
         exportButton.setTypeface(Typeface.DEFAULT_BOLD);
         exportButton.setAllCaps(false);
         exportButton.setBackground(round(Color.rgb(112, 83, 242), 16));
-        page.addView(exportButton, new LinearLayout.LayoutParams(-1, dp(54)));
+        gifButton = new Button(this);
+        gifButton.setText("TRANSPARENT GIF");
+        gifButton.setTextColor(Color.rgb(8, 20, 25));
+        gifButton.setTextSize(12);
+        gifButton.setTypeface(Typeface.DEFAULT_BOLD);
+        gifButton.setAllCaps(false);
+        gifButton.setBackground(round(Color.rgb(70, 229, 210), 16));
+        LinearLayout.LayoutParams exportParams = new LinearLayout.LayoutParams(0, dp(54), 1);
+        exportParams.setMargins(0, 0, dp(7), 0);
+        exportRow.addView(exportButton, exportParams);
+        LinearLayout.LayoutParams gifParams = new LinearLayout.LayoutParams(0, dp(54), 1);
+        gifParams.setMargins(dp(7), 0, 0, 0);
+        exportRow.addView(gifButton, gifParams);
+        page.addView(exportRow);
         exportButton.setOnClickListener(v -> startExport());
+        gifButton.setOnClickListener(v -> startGifExport());
 
         TextView footer = text("MADE FOR YOUR LYRICS  •  SAJI TXTFX", 10, Color.rgb(104, 110, 139), true);
         footer.setGravity(Gravity.CENTER);
@@ -289,6 +306,28 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void startGifExport() {
+        String textValue = lyricInput.getText().toString().trim();
+        if (textValue.isEmpty()) {
+            Toast.makeText(this, "Pehle apna text likho", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(lyricInput.getWindowToken(), 0);
+        exportButton.setEnabled(false);
+        gifButton.setEnabled(false);
+        gifButton.setText("RENDERING…");
+        GifExporter.export(this, textValue, selectedStyle, selectedColor, selectedSize,
+                selectedRatio, selectedTypeface, new Mp4Exporter.ResultCallback() {
+                    @Override public void onComplete(String message, boolean success) {
+                        exportButton.setEnabled(true);
+                        gifButton.setEnabled(true);
+                        gifButton.setText("TRANSPARENT GIF");
+                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     private void startExport() {
         String textValue = lyricInput.getText().toString().trim();
         if (textValue.isEmpty()) {
@@ -298,12 +337,14 @@ public class MainActivity extends Activity {
         ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(lyricInput.getWindowToken(), 0);
         exportButton.setEnabled(false);
+        gifButton.setEnabled(false);
         exportButton.setText("RENDERING…");
         Mp4Exporter.export(this, textValue, selectedStyle, selectedColor, selectedSize, selectedRatio, selectedTypeface,
                 new Mp4Exporter.ResultCallback() {
                     @Override public void onComplete(String message, boolean success) {
                         exportButton.setEnabled(true);
-                        exportButton.setText("EXPORT MP4  ↗");
+                        gifButton.setEnabled(true);
+                        exportButton.setText("EXPORT MP4");
                         Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
                     }
                 });
