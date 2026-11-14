@@ -64,7 +64,7 @@ public class TextFxView extends View {
                 backgroundColor, safeFrame, Typeface.create("sans-serif", Typeface.BOLD));
     }
 
-    private static void drawFrame(Canvas canvas, int width, int height, long timeMs,
+    public static void drawFrame(Canvas canvas, int width, int height, long timeMs,
                                   String text, int style, int color, float sizeSp,
                                   int backgroundColor, boolean safeFrame, Typeface font) {
         if (width <= 0 || height <= 0) return;
