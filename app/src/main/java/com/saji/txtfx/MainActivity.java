@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
     private int selectedColor = Color.WHITE;
     private float selectedSize = 42f;
     private int selectedRatio = 0;
+    private Typeface selectedTypeface = Typeface.create("sans-serif", Typeface.BOLD);
     private TextFxView preview;
     private FrameLayout previewFrame;
     private EditText lyricInput;
@@ -177,6 +178,7 @@ public class MainActivity extends Activity {
                 else if (position == 2) tf = Typeface.create("monospace", Typeface.BOLD);
                 else if (position == 3) tf = Typeface.create("sans-serif-light", Typeface.NORMAL);
                 else tf = Typeface.create("sans-serif", Typeface.BOLD);
+                selectedTypeface = tf;
                 preview.setTypefaceValue(tf);
             }
             @Override public void onNothingSelected(android.widget.AdapterView<?> parent) { }
@@ -297,7 +299,7 @@ public class MainActivity extends Activity {
                 .hideSoftInputFromWindow(lyricInput.getWindowToken(), 0);
         exportButton.setEnabled(false);
         exportButton.setText("RENDERING…");
-        Mp4Exporter.export(this, textValue, selectedStyle, selectedColor, selectedSize, selectedRatio,
+        Mp4Exporter.export(this, textValue, selectedStyle, selectedColor, selectedSize, selectedRatio, selectedTypeface,
                 new Mp4Exporter.ResultCallback() {
                     @Override public void onComplete(String message, boolean success) {
                         exportButton.setEnabled(true);
@@ -307,14 +309,14 @@ public class MainActivity extends Activity {
                 });
     }
 
-    private TextView sectionTitle(String title, String subtitle) {
+    private LinearLayout sectionTitle(String title, String subtitle) {
         LinearLayout block = new LinearLayout(this);
         block.setOrientation(LinearLayout.VERTICAL);
         TextView first = text(title, 13, Color.WHITE, true);
         TextView second = text(subtitle, 11, Color.rgb(125, 132, 163), false);
         block.addView(first);
         block.addView(second);
-        return first;
+        return block;
     }
 
     private Button smallButton(String label, boolean selected) {
