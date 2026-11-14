@@ -45,7 +45,7 @@ public final class Mp4Exporter {
             String message;
             boolean success;
             try {
-                File output = renderVideo(text, style, color, size, ratio, typeface);
+                File output = renderVideo(appContext, text, style, color, size, ratio, typeface);
                 Uri saved = saveToMovies(appContext, output);
                 output.delete();
                 message = "Video saved in Movies/SAJI TXTFX";
@@ -60,7 +60,7 @@ public final class Mp4Exporter {
         }, "SAJI-TXTFX-Export").start();
     }
 
-    private static File renderVideo(String text, int style, int color, float size,
+    private static File renderVideo(Context context, String text, int style, int color, float size,
                                     int ratio, Typeface typeface) throws Exception {
         int width = ratio == 2 ? 1280 : 720;
         int height = ratio == 1 ? 720 : (ratio == 2 ? 720 : 1280);
@@ -75,7 +75,7 @@ public final class Mp4Exporter {
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
 
         MediaCodec codec = MediaCodec.createByCodecName(choice.name);
-        File temp = new File(new File(System.getProperty("java.io.tmpdir")), "saji-txtfx-" + System.currentTimeMillis() + ".mp4");
+        File temp = new File(context.getCacheDir(), "saji-txtfx-" + System.currentTimeMillis() + ".mp4");
         MediaMuxer muxer = null;
         boolean codecStarted = false;
         boolean muxerStarted = false;
